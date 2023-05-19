@@ -36,7 +36,14 @@
     HID_REPORT_COUNT   ( 32                                     ) ,\
     HID_REPORT_SIZE    ( 1                                      ) ,\
     HID_INPUT          ( HID_DATA | HID_VARIABLE | HID_ABSOLUTE ) ,\
-    /* 32 todo add throttle */ \
+    /* 16 bit throttle (min 0, max 32767 ) */ \
+    HID_USAGE_PAGE     ( HID_USAGE_PAGE_DESKTOP                 ) ,\
+    HID_USAGE          ( HID_USAGE_DESKTOP_DIAL                 ) ,\
+    HID_LOGICAL_MIN_N  ( 0x0000,2                               ) ,\
+    HID_LOGICAL_MAX_N  ( 0x7FFF,2                               ) ,\
+    HID_REPORT_COUNT   ( 1                                      ) ,\
+    HID_REPORT_SIZE    ( 16                                     ) ,\
+    HID_INPUT          ( HID_DATA | HID_VARIABLE | HID_ABSOLUTE ) ,\
   HID_COLLECTION_END \
 
 
@@ -103,7 +110,7 @@ void HIDgamepad::sendAll(uint32_t bt, int16_t x, int16_t y, int16_t z, int16_t r
     report.Rx = rx;
     report.buttons = bt;
     // print data that is sent
-    Serial.printf("x: %d, y: %d, z: %d, rx: %d, ry: %d, rz: %d, bt: %d, hat: %d\n", x, y, z, rx, ry, rz, bt, hat);
+    // Serial.printf("x: %d, y: %d, z: %d, rx: %d, ry: %d, rz: %d, bt: %d, hat: %d\n", x, y, z, rx, ry, rz, bt, hat);
     sendReport();
 }
 

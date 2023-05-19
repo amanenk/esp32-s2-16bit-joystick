@@ -10,7 +10,8 @@ typedef struct {
     int16_t Rz;
     int16_t Rx;
     int16_t Ry;
-    uint32_t buttons;
+    uint32_t buttons;    
+    int16_t slider; // throttle
 }__attribute((packed)) hid_gamepad_t;
 
 
