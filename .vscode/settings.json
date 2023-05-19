@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "*.tcc": "cpp",
+        "string_view": "cpp",
+        "iomanip": "cpp",
+        "sstream": "cpp",
+        "typeinfo": "cpp",
+        "new": "cpp",
+        "stdexcept": "cpp"
+    }
+}
