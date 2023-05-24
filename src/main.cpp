@@ -3,6 +3,7 @@
 #include "SD.h"
 #include "joystick.h"
 #include <Adafruit_NeoPixel.h>
+#include "mux.h"
 
 #if CFG_TUD_HID
 HIDgamepad gamepad;
@@ -59,6 +60,9 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(rdy_pin), adc_ready_calback, RISING);
 
   ADS.readADC(channel); // trigger first read
+
+  // setup mux
+  init_mux();
 }
 
 // handle conversions if both are ready
@@ -100,6 +104,8 @@ void loop()
     Serial.printf("time: %d, value %f, %f, %f, %f\n", millis() - start_time, adc_values[0] * f, adc_values[1] * f, adc_values[2] * f, adc_values[3] * f);
     last_time = millis();
   }
+
+  auto mux_values = read_muxes();
 
   // Serial.printf("read time: %d, value %d\n", millis() - start_time, x);
 
