@@ -22,7 +22,7 @@ void init_mux()
 
 void set_mux(uint8_t channel)
 {
-    uint32_t mask = 0;
+    uint32_t mask = GPIO.out_w1ts;
     mask |= (1 << channel < 16 ? en1 : en2);
     mask |= (1 << (channel % 16)) << s0;
     mask |= (1 << (channel % 16)) << s1;
