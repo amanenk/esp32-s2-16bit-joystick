@@ -4,6 +4,8 @@
 #include "joystick.h"
 #include <Adafruit_NeoPixel.h>
 #include "mux.h"
+#include "adc_task.hpp"
+#include "mux_task.hpp"
 
 #if CFG_TUD_HID
 HIDgamepad gamepad;
@@ -18,20 +20,10 @@ Adafruit_NeoPixel pixels(1, PIN, NEO_GRB + NEO_KHZ800);
 
 #include <CircularBuffer.h>
 
-ADS1115 ADS(0x48);
 float f = 0;
-bool adc_ready = false;
-uint8_t channel = 0;
-int32_t adc_values[4] = {0, 0, 0, 0};
-constexpr uint8_t max_channels = 3;
-constexpr uint8_t rdy_pin = 7;
+constexpr uint32_t multiplier = 10000;
 
 CircularBuffer<double, 10> time_buffer;
-
-void adc_ready_calback()
-{
-  adc_ready = true;
-}
 
 void setup()
 {
@@ -44,65 +36,22 @@ void setup()
   pixels.setBrightness(10);
   pixels.begin(); // INITIALIZE NeoPixel (REQUIRED)
 
-  ADS.begin();
-  ADS.setGain(1);      // 6.144 volt
-  ADS.setDataRate(7);  // fast
-  ADS.setMode(0);      // continuous mode
-  f = ADS.toVoltage(); // voltage factor
-  ADS.requestADC(0);
-  // SET ALERT RDY PIN
-  ADS.setComparatorThresholdHigh(0x8000);
-  ADS.setComparatorThresholdLow(0x0000);
-  ADS.setComparatorQueConvert(0);
-
-  // SET INTERRUPT HANDLER TO CATCH CONVERSION READY
-  pinMode(rdy_pin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(rdy_pin), adc_ready_calback, RISING);
-
-  ADS.readADC(channel); // trigger first read
-
-  // setup mux
-  init_mux();
+  // create adc task
+  xTaskCreate(adc_task, "adc_task", 4096, NULL, 1, NULL);
+  // create mux task
+  xTaskCreate(mux_task, "mux_task", 4096, NULL, 1, NULL);
 }
 
-// handle conversions if both are ready
-bool handleConversion()
-{
-  if (adc_ready == false)
-    return false;
-
-  // read the value of both
-  int16_t a = ADS.getValue();
-  adc_values[channel] = a;
-  channel++;
-  if (channel >= max_channels)
-    channel = 0;
-  ADS.readADC(channel);
-  adc_ready = false;
-
-  return true;
-}
-
-unsigned long last_time = 0;
+unsigned long loop_last_time = 0;
 void loop()
 {
-  auto start_time = millis();
-  if (handleConversion() == true)
-  {
-    // Serial.printf("read time: %d, value %d, %d, %d, %d\n", millis() - start_time, adc_values[0], adc_values[1], adc_values[2], adc_values[3]);
-    // Serial.printf("read time: %d, value %f, %f, %f, %f\n", millis() - start_time, adc_values[0] * f, adc_values[1] * f, adc_values[2] * f, adc_values[3] * f);
-    // Serial.println("last time: " + String(millis() - last_time) + "ms");
-    int multiplier = 10000;
-    int16_t x = map(f * adc_values[0] * multiplier, 0.8 * multiplier, 4 * multiplier, -32768, 32767);
-    int16_t y = map(f * adc_values[1] * multiplier, 0.8 * multiplier, 4 * multiplier, -32768, 32767);
-    gamepad.joystick1(x, y, 0);
-  }
+  auto period = millis() - loop_last_time;
+  loop_last_time = millis();
 
   static unsigned long last_time = 0;
   if (millis() - last_time > 1000)
   {
-    Serial.printf("time: %d, value %f, %f, %f, %f\n", millis() - start_time, adc_values[0] * f, adc_values[1] * f, adc_values[2] * f, adc_values[3] * f);
-    last_time = millis();
+    Serial.printf("loop_period: %d\n", period);
   }
 
   auto mux_values = read_muxes();

@@ -1,13 +1,13 @@
 #include <Arduino.h>
 #include "mux.h"
 
-constexpr uint8_t en1 = 2;
-constexpr uint8_t en2 = 3;
-constexpr uint8_t s0 = 4;
-constexpr uint8_t s1 = 5;
-constexpr uint8_t s2 = 6;
-constexpr uint8_t s3 = 7;
-constexpr uint8_t pin = 8;
+constexpr uint8_t en1 = 11;
+constexpr uint8_t en2 = 12;
+constexpr uint8_t s0 = 13;
+constexpr uint8_t s1 = 14;
+constexpr uint8_t s2 = 15;
+constexpr uint8_t s3 = 16;
+constexpr uint8_t pin = 17;
 
 void init_mux()
 {
