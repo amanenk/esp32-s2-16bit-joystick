@@ -39,8 +39,7 @@ void HIDgamepad::sendReport()
 
 void HIDgamepad::buttons(uint32_t bt)
 {
-    report.buttons1 = bt;
-    sendReport();
+    report.buttons = bt;
 }
 
 void HIDgamepad::joystick1(int16_t x, int16_t y, int16_t z)
@@ -48,28 +47,6 @@ void HIDgamepad::joystick1(int16_t x, int16_t y, int16_t z)
     report.x = x;
     report.y = y;
     report.z = z;
-    sendReport();
-}
-
-void HIDgamepad::joystick2(int16_t rx, int16_t ry, int16_t rz)
-{
-    report.Rx = rx;
-    report.Ry = ry;
-    report.Rz = rz;
-    sendReport();
-}
-
-void HIDgamepad::sendAll(uint32_t bt1,uint32_t bt2, int16_t x, int16_t y, int16_t z, int16_t rx, int16_t ry, int16_t rz, uint16_t hat)
-{
-    report.x = x;
-    report.y = y;
-    report.z = z;
-    report.Rx = rx;
-    report.buttons1 = bt1;
-    report.buttons1 = bt2;
-    // print data that is sent
-    // Serial.printf("x: %d, y: %d, z: %d, rx: %d, ry: %d, rz: %d, bt: %d, hat: %d\n", x, y, z, rx, ry, rz, bt, hat);
-    sendReport();
 }
 
 #endif
