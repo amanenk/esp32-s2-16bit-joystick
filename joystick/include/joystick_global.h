@@ -3,7 +3,7 @@
 
 #if CFG_TUD_HID
 HIDgamepad gamepad;
-constexpr char *product = "mnnk_j_1";
+constexpr char *product = "mnnk_joystik_1";
 constexpr char *manufacturer = "mnnk";
 constexpr char *serial = "001";
 constexpr uint16_t vid = 0x1209;
