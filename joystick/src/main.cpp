@@ -6,27 +6,16 @@
 #include "mux_task.hpp"
 #include "usb_task.hpp"
 
-// #define USE_USB_SERIAL
-
-#ifdef USE_USB_SERIAL
-#include "cdcusb.h"
-CDCusb USBSerial;
-#endif
 
 void setup()
 {
-
-#ifdef USE_USB_SERIAL
-  if (!USBSerial.begin())
-    Serial.println("Failed to start CDC USB stack");
-#else
   Serial.begin(115200);
-#endif
 
   delay(1000);
   Serial.printf("setup: start\n");
 
-  init_joystick();
+  init_joystick();  
+  // init_usb_serial();
 
   // create adc task
   xTaskCreate(adc_task, "adc_task", 10000, NULL, 1, NULL);
@@ -42,7 +31,7 @@ void loop()
   static unsigned long last_time = 0;
   if (millis() - last_time > 1000)
   {
-    // USBSerial.printf("ping: %lu\n", millis());
+    Serial.printf("ping: %lu\n", millis());
     last_time = millis();
   }
 }
