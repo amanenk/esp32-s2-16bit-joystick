@@ -41,7 +41,7 @@ void HIDgamepad::buttons(uint32_t bt)
     report.buttons = bt;
 }
 
-void HIDgamepad::joystick1(int16_t x, int16_t y, int16_t z)
+void HIDgamepad::joystick1(uint16_t x, uint16_t y, uint16_t z)
 {
     report.x = x;
     report.y = y;

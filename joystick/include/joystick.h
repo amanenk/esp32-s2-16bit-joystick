@@ -17,7 +17,7 @@ public:
     HIDgamepad(uint8_t id = 4);
     bool begin(char *str = nullptr);
     void buttons(uint32_t);
-    void joystick1(int16_t, int16_t, int16_t);
+    void joystick1(uint16_t, uint16_t, uint16_t);
     
     void sendReport();
     
