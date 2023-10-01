@@ -1,6 +1,5 @@
 #pragma once
 #include "joystick.h"
-// #include "usbserial.h"
 
 #if CFG_TUD_HID
 HIDgamepad gamepad;
@@ -17,5 +16,6 @@ void init_joystick()
     gamepad.serial(serial);
     gamepad.deviceID(vid, pid);
     gamepad.begin();
+
 }
 #endif

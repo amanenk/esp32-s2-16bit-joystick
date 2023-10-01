@@ -23,7 +23,6 @@ bool HIDgamepad::begin(char *str)
     memcpy(&hid_report_desc[EspTinyUSB::hid_report_desc_len], (uint8_t *)desc_hid_report, sizeof(desc_hid_report));
     EspTinyUSB::hid_report_desc_len += TUD_HID_DESC_LEN;
     log_d("begin len: %d", EspTinyUSB::hid_report_desc_len);
-
     return EspTinyUSB::begin(str, 6);
 }
 

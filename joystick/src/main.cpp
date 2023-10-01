@@ -5,17 +5,14 @@
 #include "adc_task.hpp"
 #include "mux_task.hpp"
 #include "usb_task.hpp"
+#include "USBCDC.h"
 
 
 void setup()
 {
+  init_joystick();
   Serial.begin(115200);
 
-  delay(1000);
-  Serial.printf("setup: start\n");
-
-  init_joystick();  
-  // init_usb_serial();
 
   // create adc task
   xTaskCreate(adc_task, "adc_task", 10000, NULL, 1, NULL);
@@ -31,7 +28,8 @@ void loop()
   static unsigned long last_time = 0;
   if (millis() - last_time > 1000)
   {
-    Serial.printf("ping: %lu\n", millis());
+   Serial.printf("ping: %lu\n", millis());
     last_time = millis();
   }
+  delay(100);
 }
