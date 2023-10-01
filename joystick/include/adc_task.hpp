@@ -56,9 +56,9 @@ void adc_task(void *pvParameter) {
       values[2] = AXIS_MAX_VALUE - values[2];
 
       // map values to 0..3000
-      values[0] = map(values[0], 0, AXIS_MAX_VALUE, 0, 3000);
-      values[1] = map(values[1], 0, AXIS_MAX_VALUE, 0, 3000);
-      values[2] = map(values[2], 0, AXIS_MAX_VALUE, 0, 3000);
+      values[0] = map(values[0], 500, 2600, 0, AXIS_MAX_VALUE);
+      values[1] = map(values[1], 500, 2600, 0, AXIS_MAX_VALUE);
+      values[2] = map(values[2], 500, 2600, 0, AXIS_MAX_VALUE);
 
       gamepad.joystick1(values[0], values[1], values[2]);
       // gamepad.joystick1(0,0,0);

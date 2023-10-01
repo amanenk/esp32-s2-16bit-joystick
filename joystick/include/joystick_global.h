@@ -1,5 +1,7 @@
 #pragma once
 #include "joystick.h"
+#include "FS.h"
+#include "SD.h"
 
 #if CFG_TUD_HID
 HIDgamepad gamepad;
