@@ -16,5 +16,6 @@ void init_joystick()
     gamepad.serial(serial);
     gamepad.deviceID(vid, pid);
     gamepad.begin();
+
 }
 #endif

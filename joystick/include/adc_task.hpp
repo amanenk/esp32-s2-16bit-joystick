@@ -1,8 +1,7 @@
+#pragma once
 #include <Arduino.h>
-
 #include <CircularBuffer.h>
 #include "joystick_global.h"
-// create a task that inits and reads ADS in a loop
 
 constexpr uint8_t buffer_size = 12;
 
@@ -55,7 +54,7 @@ void adc_task(void *pvParameter)
         static unsigned long last_time = 0;
         if (millis() - last_time > 1000)
         {
-            Serial.printf("adc native period: %d, %d\t%d\t%d\t%d\n", period, values[0], values[1], values[2]);
+            Serial.printf("adc native period: %d, %d\t%d\t%d\n", period, values[0], values[1], values[2]);
             last_time = millis();
         }
         delay(5);
